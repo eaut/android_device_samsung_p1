@@ -1,0 +1,177 @@
+# -------------------------------------------------------------------------------
+# ueventd.p1-common.rc
+# -------------------------------------------------------------------------------
+# 1. system/core/rootdir/ueventd.rc
+# 2. device/samsung/p1-common/ueventd.p1-common.rc
+# 3. device/samsung/p1[c]/ueventd.p1[c]-specific.rc
+#
+# files 2 and 3 are merged during the build process into ueventd.<device>.rc
+# -------------------------------------------------------------------------------
+
+# ---
+# devices: graphics, video, camera, ...
+# ---
+
+# 3d graphics - who needs world write? user/group wrong?
+/dev/pvrsrvkm              0666   system     system
+
+# framebuffer, hw jpeg+h264 en-/decoder
+/dev/s3c-mem               0660   system     system
+/dev/s3c-jpg               0660   system     camera
+/dev/s3c-mfc               0660   media      media
+
+# camera
+/dev/video0                0660   system     camera
+/dev/video1                0660   system     camera
+/dev/video2                0660   system     camera
+
+# tv out
+/dev/video14               0660   system     graphics
+/dev/video21               0660   system     graphics
+/dev/video22               0660   system     graphics
+
+# hdmi hot plug detect interface
+/dev/HPD                   0660   system     graphics
+
+# for copybit
+/dev/pmem_gpu1             0660   system     graphics
+
+# for ddc
+/dev/i2c-1                 0660   system     graphics
+
+# ---
+# devices: other
+# ---
+
+# i2c devices
+/dev/i2c-5                 0660   root       input
+/dev/i2c-6                 0660   root       input
+/dev/i2c-10                0660   root       input
+
+# bluetooth
+/dev/s3c2410_serial0       0660   bluetooth  bluetooth
+/dev/bthid                 0660   bluetooth  bluetooth
+
+# bluetooth dial-up networking
+/dev/dun                   0660   system     bluetooth
+
+# usb serial interface
+/dev/ttyGS0                0660   system     system
+
+# usb mtp - media transfer protocol
+/dev/usb_mtp_gadget        0660   system     mtp
+
+# gps
+/dev/s3c2410_serial1       0660   gps        system
+
+# serial console
+/dev/ttyFIQ0               0660   root       root
+
+# other
+/dev/backlightnotification 0660   system     system
+/dev/level                 0660   system     system
+/dev/rfkill                0660   system     system
+/dev/rtc0                  0660   system     system
+/dev/adc                   0660   system     system
+
+# ---
+# sysfs: usb
+# ---
+
+/sys/devices/virtual/sec/switch                        disable_vbus                 0664 system system
+/sys/devices/virtual/sec/switch                        usb_state                    0664 system system
+/sys/devices/virtual/sec/switch                        usb_sel                      0664 system system
+/sys/devices/virtual/sec/switch                        uart_sel                     0664 system system
+
+/sys/devices/virtual/switch                            dock                         0664 system system
+/sys/devices/virtual/switch                            h2w                          0664 system system
+/sys/devices/virtual/switch                            send_end                     0664 system system
+/sys/devices/virtual/switch                            usb_configuration            0664 system system
+/sys/devices/virtual/switch                            usb_connected                0664 system system
+
+/sys/devices/platform/android_usb                      tethering                    0664 system system
+/sys/devices/platform/android_usb                      UmsStatus                    0664 system system
+/sys/devices/platform/android_usb                      UsbMenuSel                   0664 system system
+/sys/devices/platform/android_usb                      AskOnStatus                  0664 system system
+/sys/devices/platform/android_usb                      AskOnMenuSel                 0664 system system
+
+/sys/devices/virtual/usb_composite                     acm                          0664 system system
+/sys/devices/virtual/usb_composite                     adb                          0664 system system
+/sys/devices/virtual/usb_composite                     mtp                          0664 system system
+/sys/devices/virtual/usb_composite                     rndis                        0664 system system
+/sys/devices/virtual/usb_composite                     usb_mass_storage             0664 system system
+
+# ---
+# sysfs: bluetooth
+# ---
+
+/sys/class/rfkill/rfkill0                              state                        0660 bluetooth bluetooth
+/sys/class/rfkill/rfkill0                              type                         0660 bluetooth bluetooth
+
+/sys/class/rfkill/rfkill1                              state                        0660 bluetooth bluetooth
+/sys/class/rfkill/rfkill1                              type                         0660 bluetooth bluetooth
+
+# change permission for uart_switch
+/sys/class/sec/uart_switch/UART_SEL                    value                        0660 radio   radio
+
+# ---
+# sysfs: cpufreq control files
+# ---
+
+/sys/devices/system/cpu/cpu0/cpufreq                   scaling_governor             0664 root    system
+/sys/devices/system/cpu/cpu0/cpufreq                   scaling_max_freq             0664 root    system
+/sys/devices/system/cpu/cpu0/cpufreq                   scaling_min_freq             0664 root    system
+
+# ---
+# sysfs: other
+# ---
+
+# gps
+/sys/class/sec/gps/GPS_PWR_EN                          value                        0660 gps     system
+/sys/class/sec/gps/GPS_nRST                            value                        0660 gps     system
+
+# ROHM Semiconductor BH1721 light sensor
+/sys/class/cabcset/switch_cabcset                      cabcset_file_cmd             0660 system  system
+/sys/class/cabcset/switch_cabcset                      lightsensor_file_state       0660 system  system
+
+/sys/devices/virtual/lightsensor/switch_cmd            lightsensor_file_cmd         0660 system  system
+/sys/devices/virtual/lightsensor/switch_cmd            lightsensor_file_state       0660 system  system
+/sys/devices/virtual/lightsensor/switch_cmd            lightsensor_file_illuminance 0660 system  system
+
+# display
+/sys/class/backlight/s5p_bl                            brightness                   0660 system  system
+/sys/class/backlight/s5p_bl                            lcd_power                    0660 system  system
+/sys/class/backlight/s5p_bl                            contrast                     0660 system  system
+/sys/class/backlight/s5p_bl                            max_contrast                 0660 system  system
+
+/sys/class/lcd/s5p_lcd                                 lcd_power                    0660 system  system
+/sys/class/lcd/s5p_lcd                                 contrast                     0660 system  system
+/sys/class/lcd/s5p_lcd                                 max_contrast                 0660 system  system
+
+# buttons
+/sys/devices/virtual/leds/button-backlight             brightness                   0660 system  system
+
+# leds
+/sys/devices/virtual/misc/backlightnotification        blink_control                0660 system  system
+/sys/devices/virtual/misc/backlightnotification        enabled                      0660 system  system
+/sys/devices/virtual/misc/backlightnotification        notification_led             0660 system  system
+/sys/devices/virtual/sec/keyboard                      keyboard_led                 0660 system  system
+
+/sys/class/mdnieset_ui/switch_mdnieset_ui              mdnieset_ui_file_cmd         0660 system  system
+/sys/class/mdnieset_ui/switch_mdnieset_ui              mdnieset_region_file_cmd     0660 system  system
+/sys/class/mdnieset_outdoor/switch_mdnieset_outdoor    mdnieset_outdoor_file_cmd    0660 system  system
+/sys/class/sec/sec_tune_cmc623                         color_saturation             0660 system  system
+/sys/class/sec/sec_tune_cmc623                         color_black                  0660 system  system
+/sys/class/sec/sec_tune_cmc623                         color_white                  0660 system  system
+
+# power
+/sys/class/power_supply/battery                        reset_soc                    0660 system  system
+/sys/class/power_supply/battery                        reset_cap                    0660 system  system
+/sys/class/power_supply/battery                        fg_reg                       0660 system  system
+/sys/class/power_supply/battery                        charging_mode_booting        0660 system  system
+
+# input / ouput
+/sys/devices/platform/gpio-keys                        key_pressed                  0660 system  system
+/sys/class/misc/level                                  control                      0660 system  system
+/sys/class/jack/jack_selector                          select_jack                  0660 system  system
+

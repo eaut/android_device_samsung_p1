@@ -42,10 +42,17 @@
 
 DEVICE_PACKAGE_OVERLAYS := device/samsung/p1/overlay
 
-# Init files
+# generate ueventd.gt-p1000.rc from common and device specific files
+TARGET_UEVENTD_HW_RC := device/samsung/p1/ueventd.gt-p1000.rc
+
+$(TARGET_UEVENTD_HW_RC) : device/samsung/p1/ueventd.p1-specific.rc device/samsung/p1/ueventd.p1-common.rc
+	cat device/samsung/p1/ueventd.p1-common.rc > $@
+	cat device/samsung/p1/ueventd.p1-specific.rc >> $@
+
+# init files
 PRODUCT_COPY_FILES += \
 	device/samsung/p1/init.gt-p1000.rc:root/init.gt-p1000.rc \
-	device/samsung/p1/ueventd.gt-p1000.rc:root/ueventd.gt-p1000.rc 
+	$(TARGET_UEVENTD_HW_RC):root/ueventd.gt-p1000.rc
 
 # vold
 PRODUCT_COPY_FILES += \
@@ -54,6 +61,7 @@ PRODUCT_COPY_FILES += \
 # RIL
 # Permissions
 PRODUCT_COPY_FILES += \
+	frameworks/base/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
 	frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
 # Device-specific packages

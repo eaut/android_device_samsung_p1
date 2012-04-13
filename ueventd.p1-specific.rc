@@ -1,0 +1,44 @@
+# -------------------------------------------------------------------------------
+# ueventd.p1-specific.rc
+# -------------------------------------------------------------------------------
+# 1. system/core/rootdir/ueventd.rc
+# 2. device/samsung/p1-common/ueventd.p1-common.rc
+# 3. device/samsung/p1/ueventd.p1-specific.rc
+#
+# files 2 and 3 are merged during the build process into ueventd.gt-p1000.rc
+# -------------------------------------------------------------------------------
+
+# ---
+# devices
+# ---
+
+# GSM radio
+/dev/s3c2410_serial3       0660   radio      radio
+/dev/modem_ctl             0660   radio      radio
+/dev/modem_fmt             0660   radio      radio
+/dev/modem_rfs             0660   radio      radio
+/dev/alarm                 0664   radio      radio
+/dev/onedram               0660   radio      radio
+
+# ST-Microelectronics L3G4200D gyroscope sensor
+/dev/l3g4200d              0660   compass    system
+
+# ST-Microelectronics BMA020 3-axis accelerometer
+/dev/accelerometer         0660   compass    system
+
+# Asahi Kasei AK8973 3-axis magnetic field sensor
+/dev/akm8973               0660   compass    system
+
+# ISDB-T MobileTV: GT-P1000L only
+/dev/dmb                   0660   system     system
+/dev/s3c-tsi               0660   system     system
+
+# ---
+# sysfs
+# ---
+
+/sys/devices/virtual/BMA-dev/accelerometer             calibration               0660 compass system
+/sys/devices/virtual/BMA-dev/accelerometer             acc_file                  0660 compass system
+/sys/class/L3G_GYRO-dev/l3g4200d                       gyro_get_temp             0660 compass system
+/sys/class/L3G_GYRO-dev/l3g4200d                       gyro_power_on             0660 compass system
+/sys/class/L3G_GYRO-dev/l3g4200d                       gyro_selftest             0660 compass system
